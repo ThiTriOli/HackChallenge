@@ -8,11 +8,11 @@ export default function HomePage() {
       <div className="flex flex-col items-center text-center mb-10">
         <h1 className="text-4xl font-bold mb-4">Sistema de Check-in por Email</h1>
         <p className="text-xl text-muted-foreground max-w-2xl">
-          Gerencie check-ins de convidados para eventos com capacidade de 50 a 140 pessoas
+          Faça check-in para o evento usando seu email e o código QR
         </p>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
+      <div className="grid gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Check-in de Convidados</CardTitle>
@@ -24,33 +24,17 @@ export default function HomePage() {
             </Link>
           </CardContent>
         </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Área do Administrador</CardTitle>
-            <CardDescription>Gerencie check-ins e visualize estatísticas</CardDescription>
-          </CardHeader>
-          <CardContent className="flex justify-center">
-            <Link href="/admin">
-              <Button size="lg" variant="outline">
-                Acessar Painel
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-
-        <Card className="md:col-span-2">
-          <CardHeader>
-            <CardTitle>Gerar Código QR</CardTitle>
-            <CardDescription>Crie um código QR para o check-in dos convidados</CardDescription>
-          </CardHeader>
-          <CardContent className="flex justify-center">
-            <Link href="/admin/codigo-qr">
-              <Button>Gerar Código QR</Button>
-            </Link>
-          </CardContent>
-        </Card>
       </div>
+
+      <footer className="mt-20 text-center text-sm text-muted-foreground">
+        <p>© {new Date().getFullYear()} Sistema de Check-in. Todos os direitos reservados.</p>
+        {/* Link discreto para área administrativa */}
+        <div className="mt-2">
+          <Link href="/admin/login" className="text-xs text-muted-foreground hover:underline">
+            Área Administrativa
+          </Link>
+        </div>
+      </footer>
     </div>
   )
 }

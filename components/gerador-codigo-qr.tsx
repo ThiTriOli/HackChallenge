@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import QRCode from "qrcode.react"
+import QRCode from "react-qr-code"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -17,16 +17,29 @@ export function GeradorCodigoQR({ eventoId = "evento-001", valorPadrao = "check-
   const [tamanho, setTamanho] = useState(256)
 
   const baixarCodigoQR = () => {
-    const canvas = document.getElementById("codigo-qr") as HTMLCanvasElement
-    if (canvas) {
-      const pngUrl = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream")
+    // Para react-qr-code, precisamos de uma abordagem diferente para download
+    // já que ele renderiza um SVG, não um canvas
+    const svg = document.getElementById("codigo-qr")
+    if (svg) {
+      // Converter SVG para uma string
+      const svgData = new XMLSerializer().serializeToString(svg)
 
-      const linkDownload = document.createElement("a")
-      linkDownload.href = pngUrl
-      linkDownload.download = `evento-${eventoId}-codigo-qr.png`
-      document.body.appendChild(linkDownload)
-      linkDownload.click()
-      document.body.removeChild(linkDownload)
+      // Criar um blob com os dados SVG
+      const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" })
+
+      // Criar URL do blob
+      const svgUrl = URL.createObjectURL(svgBlob)
+
+      // Criar link de download
+      const downloadLink = document.createElement("a")
+      downloadLink.href = svgUrl
+      downloadLink.download = `evento-${eventoId}-codigo-qr.svg`
+      document.body.appendChild(downloadLink)
+      downloadLink.click()
+      document.body.removeChild(downloadLink)
+
+      // Liberar a URL do objeto
+      URL.revokeObjectURL(svgUrl)
     }
   }
 
@@ -38,7 +51,13 @@ export function GeradorCodigoQR({ eventoId = "evento-001", valorPadrao = "check-
       </CardHeader>
       <CardContent className="flex flex-col items-center space-y-4">
         <div className="bg-white p-4 rounded-lg">
-          <QRCode id="codigo-qr" value={valorQR} size={tamanho} level="H" includeMargin={true} />
+          <QRCode
+            id="codigo-qr"
+            value={valorQR}
+            size={tamanho}
+            level="H"
+            style={{ width: "100%", height: "auto", maxWidth: tamanho }}
+          />
         </div>
 
         <div className="w-full space-y-2">

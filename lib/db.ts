@@ -7,6 +7,7 @@ export interface CheckInConvidado {
   email: string
   horarioCheckIn: string
   eventoId: string
+  qrCodeData?: string // Adicionado para armazenar os dados do QR code
 }
 
 export interface Evento {
@@ -58,7 +59,7 @@ export function convidadoJaFezCheckIn(eventoId: string, email: string): boolean 
 }
 
 // Atualizar a função para adicionar um novo check-in usando email
-export function adicionarCheckIn(eventoId: string, email: string): CheckInConvidado | null {
+export function adicionarCheckIn(eventoId: string, email: string, qrCodeData?: string): CheckInConvidado | null {
   // Verificar se o evento existe
   const evento = getEvento(eventoId)
   if (!evento) {
@@ -81,6 +82,7 @@ export function adicionarCheckIn(eventoId: string, email: string): CheckInConvid
     email,
     horarioCheckIn: new Date().toISOString(),
     eventoId,
+    qrCodeData, // Armazenar os dados do QR code
   }
 
   // Adicionar o check-in ao nosso armazenamento de dados

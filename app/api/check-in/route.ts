@@ -4,7 +4,7 @@ import { adicionarCheckIn, convidadoJaFezCheckIn } from "@/lib/db"
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { eventoId, email } = body
+    const { eventoId, email, qrCodeData } = body
 
     // Validar entrada
     if (!eventoId || !email) {
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Adicionar o check-in
-    const checkIn = adicionarCheckIn(eventoId, email)
+    const checkIn = adicionarCheckIn(eventoId, email, qrCodeData)
 
     if (!checkIn) {
       return NextResponse.json({ error: "Falha ao realizar check-in do convidado" }, { status: 500 })
